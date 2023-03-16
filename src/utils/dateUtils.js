@@ -8,6 +8,6 @@ export const formatPostDate = (date) => {
 }
 
 export const getReadingTime = (text) => {
-    const t = readingTime(text, lang).text;
+    const t = readingTime(text, 200, lang).text;
     return t;
 }

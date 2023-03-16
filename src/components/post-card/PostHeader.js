@@ -1,4 +1,4 @@
-import { Avatar, Box, Stack, Typography } from "@mui/material";
+import { Avatar, Box, Skeleton, Stack, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
 const textVariant = {
@@ -17,17 +17,23 @@ const PostHeader = ({ author, mini = false }) => {
     const handleAuthorClicked = () => {};
     return (
         <Stack direction={"row"} alignItems={"center"} spacing={1}>
-            <Avatar
-                onClick={handleAuthorClicked}
-                src={author?.avatar}
-                alt={author?.name}
-                sx={{
-                    width: mini ? avatarSize.mini : avatarSize.normal,
-                    height: mini ? avatarSize.mini : avatarSize.normal,
-                }}
-            >
-                {author?.name}
-            </Avatar>
+            {author ? (
+                <Avatar
+                    onClick={handleAuthorClicked}
+                    src={author?.avatar}
+                    alt={author?.name}
+                    sx={{
+                        width: mini ? avatarSize.mini : avatarSize.normal,
+                        height: mini ? avatarSize.mini : avatarSize.normal,
+                    }}
+                >
+                    {author?.name}
+                </Avatar>
+            ) : (
+                <Skeleton>
+                    <Avatar />
+                </Skeleton>
+            )}
             <Box
                 sx={{
                     flexDirection: "row",
@@ -40,7 +46,7 @@ const PostHeader = ({ author, mini = false }) => {
                         fontWeight: 500,
                     }}
                 >
-                    {author?.name}
+                    {author ? `${author?.name}` : <Skeleton />}
                 </Typography>
                 {author?.group && (
                     <>

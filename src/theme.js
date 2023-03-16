@@ -82,6 +82,12 @@ const theme = createTheme({
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                 },
+                h5: {
+                    display: "-webkit-box",
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                },
             },
         },
     },

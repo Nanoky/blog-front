@@ -7,17 +7,20 @@ const {
     styled,
 } = require("@mui/material");
 
-const CustomTextField = styled(TextField)({
+const paddingVertical = 8;
+
+const CustomTextField = styled(TextField)(({theme}) => ({
     "& .MuiFilledInput-input": {
-        paddingTop: 10,
-        paddingBottom: 10,
+        paddingTop: paddingVertical,
+        paddingBottom: paddingVertical,
+        fontSize: theme.typography.body2.fontSize
     },
     "& .MuiFilledInput-root": {
-        borderRadius: 20
+        borderRadius: 20,
     }
-});
+}));
 
-const Searchbar = ({ onSearch, color }) => {
+const Searchbar = ({ onSearch }) => {
     const { t } = useTranslation();
 
     const handleSearch = ({ target }) => {
@@ -38,15 +41,11 @@ const Searchbar = ({ onSearch, color }) => {
                             sx={{
                                 mr: 1,
                                 mt: 0,
-                                color: color,
                             }}
                         >
                             <SearchIcon />
                         </InputAdornment>
                     ),
-                }}
-                sx={{
-                    color: color,
                 }}
                 variant="filled"
             />

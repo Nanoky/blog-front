@@ -1,4 +1,4 @@
-import { Box, CardMedia, Stack, styled } from "@mui/material";
+import { Box, CardMedia, Skeleton, Stack, styled } from "@mui/material";
 import PostContent from "./PostContent";
 
 const IMAGE_SIZE = 112;
@@ -31,11 +31,19 @@ const PostCard = ({ post, isMini = false }) => {
                                 ml: 2,
                             }}
                         >
-                            <CardImage
-                                component={"img"}
-                                image={post?.image}
-                                alt={post?.title}
-                            />
+                            {post ? (
+                                <CardImage
+                                    component={"img"}
+                                    image={post?.image}
+                                    alt={post?.title}
+                                />
+                            ) : (
+                                <Skeleton
+                                    variant="rectangular"
+                                    width={IMAGE_SIZE}
+                                    height={IMAGE_SIZE}
+                                />
+                            )}
                         </Box>
                     )}
                 </Stack>

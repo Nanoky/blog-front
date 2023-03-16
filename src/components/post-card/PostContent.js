@@ -1,4 +1,4 @@
-import { Stack, Typography } from "@mui/material";
+import { Skeleton, Stack, Typography } from "@mui/material";
 import PostHeader from "./PostHeader";
 import PostFooter from "./PostFooter";
 
@@ -10,10 +10,10 @@ const PostContent = ({ post, mini = false }) => {
                 <Typography
                     variant={mini ? "h5" : "h4"}
                     sx={{
-                        WebkitLineClamp: 3,
+                        WebkitLineClamp: mini ? 2 : 3,
                     }}
                 >
-                    {post?.title}
+                    {post ? post?.title : (<Skeleton />)}
                 </Typography>
                 {!mini && (
                     <Typography
@@ -22,7 +22,7 @@ const PostContent = ({ post, mini = false }) => {
                             WebkitLineClamp: 3,
                         }}
                     >
-                        {post?.description}
+                        {post ? post?.description : (<Skeleton />)}
                     </Typography>
                 )}
             </Stack>
