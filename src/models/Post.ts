@@ -1,3 +1,5 @@
+import { formatPostDate, getReadingTime } from "utils/dateUtils";
+
 export class Author {
     avatar: string;
     name: string;
@@ -8,6 +10,10 @@ export class Author {
         this.avatar = avatar;
         this.group = group;
     }
+
+    static convertFrom = (item: any) => {
+        return new Author(item.name, item.avatar, item.group);
+    };
 }
 
 export class Tag {
@@ -16,6 +22,10 @@ export class Tag {
     constructor(name: string) {
         this.name = name;
     }
+
+    static convertFrom = (item: any) => {
+        return new Tag(item.name);
+    };
 }
 
 export class Post {
@@ -44,4 +54,21 @@ export class Post {
         this.title = title;
         this.readingTime = readingTime;
     }
+
+    static convertFrom = (item: any) => {
+        console.log(item)
+        return new Post(
+            item.title,
+            item.description,
+            item.urlToImage,
+            formatPostDate(item.publishedAt),
+            Author.convertFrom({
+                name: item?.author,
+                avatar: null,
+                group: null,
+            }),
+            [Tag.convertFrom(item.source)],
+            getReadingTime(item?.content)
+        );
+    };
 }
