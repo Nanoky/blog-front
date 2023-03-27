@@ -17,6 +17,8 @@ import UserMenu from "./UserMenu";
 import DrawerMenu from "./DrawerMenu";
 import Logo from "./Logo";
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { ROUTE_WRITE } from "routes";
 
 export function HideOnScroll(props: { children: any; window: any; }) {
     const { children, window } = props;
@@ -42,6 +44,11 @@ const MenuButton = styled(Button)(({ theme }) => ({
 const Navbar = () => {
     const { t } = useTranslation();
     const theme = useTheme();
+    const navigate = useNavigate();
+
+    const handleWriteClick = () => {
+        navigate(ROUTE_WRITE);
+    }
 
     return (
         <AppBar
@@ -105,6 +112,7 @@ const Navbar = () => {
                             <MenuButton
                                 disableRipple={true}
                                 startIcon={<EditIcon />}
+                                onClick={handleWriteClick}
                             >
                                 {t("Write")}
                             </MenuButton>

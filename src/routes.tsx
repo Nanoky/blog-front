@@ -3,6 +3,8 @@ import HomePage from "pages/HomePage";
 import WritePage from "pages/WritePage";
 import React from "react";
 
+export const ROUTE_HOME = '/';
+export const ROUTE_WRITE = '/write';
 
 const routes = [
     {

@@ -2,6 +2,8 @@ import "@fontsource/source-serif-pro";
 import "@fontsource/work-sans";
 import { createTheme } from "@mui/material";
 
+const HeaderFont = 'Work Sans';
+
 const theme = createTheme({
     palette: {
         mode: "light",
@@ -18,10 +20,33 @@ const theme = createTheme({
         fontFamily: "Source Serif Pro",
         htmlFontSize: 16,
         h1: {
-            fontSize: "2rem",
+            fontSize: "2.5rem",
+            fontWeight: 800,
+            fontFamily: HeaderFont,
         },
         h2: {
-            fontSize: "1.5rem",
+            fontSize: "2.2rem",
+            fontWeight: 700,
+            fontFamily: HeaderFont,
+        },
+        h3: {
+            fontSize: "2rem",
+            fontWeight: 700,
+            fontFamily: HeaderFont,
+        },
+        h4: {
+            fontSize: "1.4rem",
+            fontWeight: 700,
+            fontFamily: HeaderFont,
+        },
+        h5: {
+            fontSize: "1rem",
+            fontWeight: 700,
+            fontFamily: HeaderFont,
+        },
+        h6: {
+            fontSize: "1rem",
+            fontFamily: HeaderFont,
         },
         body1: {
             fontSize: "1.2rem",
@@ -30,25 +55,6 @@ const theme = createTheme({
         body2: {
             fontSize: "1rem",
             fontWeight: 400,
-        },
-        h4: {
-            fontSize: "1.4rem",
-            fontWeight: 700,
-            fontFamily: "Work Sans",
-        },
-        h3: {
-            fontSize: "2rem",
-            fontWeight: 700,
-            fontFamily: "Work Sans",
-        },
-        h6: {
-            fontSize: "1rem",
-            fontFamily: "Work Sans",
-        },
-        h5: {
-            fontSize: "1rem",
-            fontWeight: 700,
-            fontFamily: "Work Sans",
         },
         subtitle2: {
             fontWeight: 400,

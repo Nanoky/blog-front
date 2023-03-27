@@ -10,7 +10,7 @@ import {
     Typography
 } from '@mui/material';
 import { useSearch } from 'hooks/useUnsplash';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { UnsplashPhoto } from 'services/unsplashService';
 
 interface SelectorProps {
@@ -24,12 +24,18 @@ const UnsplashImageSelector = ({ open, onSelect, onClose }: SelectorProps) => {
     const [page, setPage] = useState(1);
     const query = useSearch();
 
+    const inputRef = useRef<HTMLInputElement | null>(null);
+
     useEffect(() => {
         if (page) {
             query.search(text, page);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [page]);
+
+    useEffect(() => {
+        inputRef.current?.focus();
+    }, []);
 
     const handleNextPage = () => {
         setPage((prev) => (prev < query.response.totalPage ? prev + 1 : prev));
@@ -66,6 +72,7 @@ const UnsplashImageSelector = ({ open, onSelect, onClose }: SelectorProps) => {
                         placeholder='Type keywords to serch Unsplash, and press Enter'
                         variant='standard'
                         fullWidth
+                        ref={inputRef}
                     />
                 </Box>
                 {query.response.total > 0 && (

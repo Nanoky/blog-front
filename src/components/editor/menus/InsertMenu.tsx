@@ -66,7 +66,9 @@ const InsertMenuBase = ({ editor }: MenuProps) => {
     };
 
     return (
-        <FloatingMenu editor={editor}>
+        <FloatingMenu editor={editor} tippyOptions={{
+            placement: 'left'
+        }}>
             <input
                 ref={inputRef}
                 type='file'

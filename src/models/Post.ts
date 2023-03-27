@@ -56,7 +56,6 @@ export class Post {
     }
 
     static convertFrom = (item: any) => {
-        console.log(item)
         return new Post(
             item.title,
             item.description,

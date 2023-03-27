@@ -2,28 +2,27 @@ import {
     IconButton,
     InputAdornment,
     SvgIconTypeMap,
-    TextField
-} from '@mui/material';
-import { BubbleMenu, Editor } from '@tiptap/react';
-import React, { KeyboardEvent, useCallback, useEffect, useState } from 'react';
-import FormatBoldIcon from '@mui/icons-material/FormatBold';
-import FormatItalicIcon from '@mui/icons-material/FormatItalic';
-import InsertLinkIcon from '@mui/icons-material/InsertLink';
-import FormatSizeIcon from '@mui/icons-material/FormatSize';
-import CancelIcon from '@mui/icons-material/Cancel';
-import { OverridableComponent } from '@mui/material/OverridableComponent';
-import { Level } from '@tiptap/extension-heading';
-import MenuButton, { MenuButtonProps } from './MenuButton';
+    TextField,
+} from "@mui/material";
+import { BubbleMenu, Editor } from "@tiptap/react";
+import React, { KeyboardEvent, useCallback, useState } from "react";
+import FormatBoldIcon from "@mui/icons-material/FormatBold";
+import FormatItalicIcon from "@mui/icons-material/FormatItalic";
+import InsertLinkIcon from "@mui/icons-material/InsertLink";
+import FormatSizeIcon from "@mui/icons-material/FormatSize";
+import CancelIcon from "@mui/icons-material/Cancel";
+import { OverridableComponent } from "@mui/material/OverridableComponent";
+import MenuButton, { MenuButtonProps } from "./MenuButton";
 
 interface ButtonProps extends MenuButtonProps {
-    Icon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>> & { muiName: string };
+    Icon: OverridableComponent<SvgIconTypeMap<{}, "svg">> & { muiName: string };
 }
 
 const FormatButton = ({ Icon, ...props }: ButtonProps) => {
     return (
         <MenuButton
             {...props}
-            iconComponent={() => <Icon fontSize='inherit' />}
+            iconComponent={() => <Icon fontSize="inherit" />}
         />
     );
 };
@@ -31,31 +30,24 @@ const FormatButton = ({ Icon, ...props }: ButtonProps) => {
 interface MenuProps {
     editor: Editor;
     linkPlaceholder?: string;
-    headingLevels?: Array<Level>;
     disableBold?: boolean;
     disableItalic?: boolean;
     disableLink?: boolean;
     disableHeading?: boolean;
 }
 
+type Level = 1 | 2;
+
 const FormatMenuBase = ({
     editor,
-    linkPlaceholder = 'Past or type a link ...',
-    headingLevels,
+    linkPlaceholder = "Past or type a link ...",
     disableBold = false,
     disableHeading = false,
     disableItalic = false,
-    disableLink = false
+    disableLink = false,
 }: MenuProps) => {
-    const [showMenu, setShowMenu] = useState(true);
-    const [linkValue, setLinkValue] = useState('');
-    const [levels, setLevels] = useState<Array<Level>>([1, 2]);
-
-    useEffect(() => {
-        if (headingLevels) {
-            setLevels(headingLevels);
-        }
-    }, [headingLevels]);
+    const [showMenu, setShowMenu] = useState(false);
+    const [linkValue, setLinkValue] = useState("");
 
     const handleBoldClick = useCallback(() => {
         editor.chain().focus().toggleBold().run();
@@ -68,84 +60,90 @@ const FormatMenuBase = ({
     }, [editor]);
 
     const handleLinkClick = useCallback(() => {
-        setShowMenu((prev) => !prev);
+        if (editor.isActive("link")) {
+            editor
+                .chain()
+                .focus()
+                .extendMarkRange("link")
+                .toggleLink({ href: linkValue, target: "_blank" })
+                .run();
+        } else {
+            setShowMenu(true);
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [showMenu]);
 
     const handleHeadingClick = useCallback(
         (level: Level) => {
-            editor.chain().focus().toggleHeading({ level: level }).run();
+            if (level === 1) editor.chain().focus().toggleHeading1().run();
+            if (level === 2) editor.chain().focus().toggleHeading2().run();
             // eslint-disable-next-line react-hooks/exhaustive-deps
         },
         [editor]
     );
 
     const handleSubmitLink = (event: KeyboardEvent<HTMLElement>) => {
-        if (event.key === 'Enter') {
-            setShowMenu((prev) => !prev);
+        if (event.key === "Enter") {
+            setShowMenu(false);
 
             editor
                 .chain()
                 .focus()
-                .extendMarkRange('link')
-                .toggleLink({ href: linkValue, target: '_blank' })
+                .extendMarkRange("link")
+                .toggleLink({ href: linkValue, target: "_blank" })
                 .run();
         }
     };
 
     const handleLinkChange = ({
-        target
+        target,
     }: React.ChangeEvent<HTMLInputElement>) => {
         setLinkValue(target.value);
     };
 
     const handleClearField = useCallback(() => {
-        setLinkValue('');
+        setLinkValue("");
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [linkValue]);
 
     return (
         <BubbleMenu editor={editor}>
-            {showMenu ? (
+            {!showMenu ? (
                 <React.Fragment>
                     <FormatButton
-                        title='Bold'
+                        title="Bold"
                         Icon={FormatBoldIcon}
                         onClick={handleBoldClick}
-                        active={editor.isActive('bold')}
-                        disabled={disableBold || editor.isActive('heading')}
+                        active={editor.isActive("bold")}
+                        disabled={disableBold || editor.isActive("heading")}
                     />
                     <FormatButton
-                        title='Italic'
+                        title="Italic"
                         Icon={FormatItalicIcon}
                         onClick={handleItalicClick}
-                        active={editor.isActive('italic')}
-                        disabled={disableItalic || editor.isActive('heading')}
+                        active={editor.isActive("italic")}
+                        disabled={disableItalic || editor.isActive("heading")}
                     />
                     <FormatButton
-                        title='Link'
+                        title="Link"
                         Icon={InsertLinkIcon}
                         onClick={handleLinkClick}
-                        active={editor.isActive('link')}
+                        active={editor.isActive("link")}
                         disabled={disableLink}
                     />
                     <FormatButton
-                        title='H1'
+                        title="H1"
                         Icon={FormatSizeIcon}
-                        onClick={() => handleHeadingClick(levels[0])}
-                        active={editor.isActive('heading', {
-                            level: levels[0]
-                        })}
+                        onClick={() => handleHeadingClick(1)}
+                        active={editor.isActive("heading1")}
                         disabled={disableHeading}
                     />
                     <FormatButton
-                        title='H2'
+                        title="H2"
                         Icon={FormatSizeIcon}
-                        size='small'
-                        onClick={() => handleHeadingClick(levels[1])}
-                        active={editor.isActive('heading', {
-                            level: levels[1]
-                        })}
+                        size="small"
+                        onClick={() => handleHeadingClick(2)}
+                        active={editor.isActive("heading2")}
                         disabled={disableHeading}
                     />
                 </React.Fragment>
@@ -156,16 +154,16 @@ const FormatMenuBase = ({
                     onChange={handleLinkChange}
                     autoFocus
                     sx={{
-                        backgroundColor: 'Background'
+                        backgroundColor: "",
                     }}
                     InputProps={{
                         endAdornment: (
-                            <InputAdornment position='end'>
+                            <InputAdornment position="end">
                                 <IconButton onClick={handleClearField}>
                                     <CancelIcon />
                                 </IconButton>
                             </InputAdornment>
-                        )
+                        ),
                     }}
                 />
             )}
