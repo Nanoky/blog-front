@@ -1,6 +1,6 @@
 
 
-export const APP_NAME = "StoriesB";
+export const APP_NAME = "Teckonan";
 
 export const DRAWER_WIDTH = 240;
 

@@ -1,13 +1,13 @@
-import { Editor, FloatingMenu } from '@tiptap/react';
-import React, { useRef, useState } from 'react';
-import MenuButton, { MenuButtonProps } from './MenuButton';
-import { UnsplashPhoto } from 'services/unsplashService';
-import UnsplashImageSelector from './ImageSelector';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { faImage } from '@fortawesome/free-solid-svg-icons';
-import { faUnsplash } from '@fortawesome/free-brands-svg-icons';
-import { useUnsplashEnabled } from 'hooks/useUnsplash';
+import { Editor, FloatingMenu } from "@tiptap/react";
+import React, { useRef, useState } from "react";
+import MenuButton, { MenuButtonProps } from "./MenuButton";
+import { UnsplashPhoto } from "services/unsplashService";
+import UnsplashImageSelector from "./ImageSelector";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { faImage } from "@fortawesome/free-solid-svg-icons";
+import { faUnsplash } from "@fortawesome/free-brands-svg-icons";
+import { useUnsplashEnabled } from "hooks/useUnsplash";
 
 interface ButtonProps extends MenuButtonProps {
     icon: IconProp;
@@ -49,7 +49,7 @@ const InsertMenuBase = ({ editor }: MenuProps) => {
         if (file) {
             const image = URL.createObjectURL(file);
             editor.chain().focus().setImage({
-                src: image
+                src: image,
             });
         }
     };
@@ -61,28 +61,32 @@ const InsertMenuBase = ({ editor }: MenuProps) => {
             .setImage({
                 src: image.link,
                 alt: image.description,
-                title: `${image.description} by <a href='${image.authorLink}'>${image.author}</a>`
-            });
+                title: `${image.description} by <a href='${image.authorLink}'>${image.author}</a>`,
+            })
+            .run();
     };
 
     return (
-        <FloatingMenu editor={editor} tippyOptions={{
-            placement: 'left'
-        }}>
+        <FloatingMenu
+            editor={editor}
+            tippyOptions={{
+                placement: "left",
+            }}
+        >
             <input
                 ref={inputRef}
-                type='file'
+                type="file"
                 hidden
                 onChange={(e) => handleAddLocalImage(e.target.files?.[0])}
             />
             <InsertButton
-                title='Image from computer'
+                title="Image from computer"
                 icon={faImage}
                 onClick={handleLocalImageClick}
             />
             {unsplashEnabled && (
                 <InsertButton
-                    title='Image from unsplash'
+                    title="Image from unsplash"
                     icon={faUnsplash}
                     onClick={handleUnsplashImageClick}
                 />
