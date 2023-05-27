@@ -43,7 +43,7 @@ describe('EditorBase without service provider test suite', () => {
     });
 });
 
-describe('EditorBase without service provider test suite', () => {
+describe('EditorBase without service provider test suite with service', () => {
     test('should EditorBase content be defined', () => {
         const value = 'Hello world';
         const content = `<p>${value}</p>`;

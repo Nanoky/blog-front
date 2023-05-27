@@ -22,7 +22,7 @@ export class UnsplashPhoto {
     static convertFrom = (data: any): UnsplashPhoto => {
         return {
             id: data?.id,
-            link: data?.links?.photos,
+            link: data?.urls?.regular,
             description: data?.description,
             author: data?.user?.name,
             authorLink: data?.user?.['portfolio_url']

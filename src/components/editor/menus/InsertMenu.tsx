@@ -63,7 +63,18 @@ const InsertMenuBase = ({ editor }: MenuProps) => {
                 alt: image.description,
                 title: `${image.description} by <a href='${image.authorLink}'>${image.author}</a>`,
             })
+            .enter()
             .run();
+        editor
+            .chain()
+            .focus()
+            .createParagraphNear()
+            .insertContent(
+                `<span class='image-legend'>${image.description} by <a href='${image.authorLink}'>${image.author}</a></span>`
+            )
+            .run();
+
+        editor.chain().focus('end').enter().focus().run();
     };
 
     return (

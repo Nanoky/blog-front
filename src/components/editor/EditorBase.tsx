@@ -95,7 +95,11 @@ const EditorBase = ({
             CustomLink.configure({
                 openOnClick: editable ? false : true
             }),
-            Image,
+            Image.configure({
+                HTMLAttributes: {
+                    class: 'image'
+                }
+            }),
         ],
         editable: editable,
         onUpdate: ({ editor }) => {

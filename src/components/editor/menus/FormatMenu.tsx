@@ -4,7 +4,7 @@ import {
     SvgIconTypeMap,
     TextField,
 } from "@mui/material";
-import { BubbleMenu, Editor } from "@tiptap/react";
+import { BubbleMenu, Editor, isTextSelection } from "@tiptap/react";
 import React, { KeyboardEvent, useCallback, useState } from "react";
 import FormatBoldIcon from "@mui/icons-material/FormatBold";
 import FormatItalicIcon from "@mui/icons-material/FormatItalic";
@@ -107,7 +107,40 @@ const FormatMenuBase = ({
     }, [linkValue]);
 
     return (
-        <BubbleMenu editor={editor}>
+        <BubbleMenu
+            editor={editor}
+            shouldShow={({ editor, view, state, oldState, from, to }) => {
+                // only show the bubble menu for selected text
+
+                const { doc, selection } = state;
+                const { empty } = selection;
+
+                // Sometime check for `empty` is not enough.
+                // Doubleclick an empty paragraph returns a node size of 2.
+                // So we check also for an empty text size.
+                const isEmptyTextBlock =
+                    !doc.textBetween(from, to).length &&
+                    isTextSelection(state.selection);
+
+                // When clicking on a element inside the bubble menu the editor "blur" event
+                // is called and the bubble menu item is focussed. In this case we should
+                // consider the menu as part of the editor and keep showing the menu
+
+                const hasEditorFocus = view.hasFocus();
+
+                if (
+                    !hasEditorFocus ||
+                    empty ||
+                    isEmptyTextBlock ||
+                    !editor.isEditable ||
+                    editor.isActive('image')
+                ) {
+                    return false;
+                }
+
+                return true;
+            }}
+        >
             {!showMenu ? (
                 <React.Fragment>
                     <FormatButton

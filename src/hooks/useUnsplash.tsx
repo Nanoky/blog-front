@@ -10,6 +10,7 @@ interface HookResponse {
     response: UnsplashResponse;
     loading: boolean;
     error: any;
+    reset: () => void
 }
 
 export const useSearch = (): HookResponse => {
@@ -24,11 +25,16 @@ export const useSearch = (): HookResponse => {
         http.call(searchUnsplash, params);
     }, [http]);
 
+    const reset = () => {
+        http.reset?.();
+    }
+
     return {
         search,
         response: http.response,
         loading: http.loading,
-        error: http.error
+        error: http.error,
+        reset
     };
 };
 

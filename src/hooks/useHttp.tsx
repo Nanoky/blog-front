@@ -12,6 +12,7 @@ interface HttpHookResponse<O, I> {
     response: O;
     loading: boolean;
     error: any;
+    reset?: () => void
 }
 
 /**
@@ -156,11 +157,21 @@ const useHttp = <O, I>(
         }
     };
 
+    /**
+     * Reset data
+     */
+    const reset = () => {
+        setResponse(defaultValue);
+        setLoading(false);
+        setError(null);
+    }
+
     return {
         call,
         response,
         loading: loading || serviceChecking,
         error,
+        reset
     };
 };
 
